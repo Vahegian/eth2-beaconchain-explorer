@@ -246,21 +246,25 @@ func GetUpdatedClients() []string {
 	// return []string{"Prysm", "Teku"}
 }
 
+var lastNotificationUpdate time.Time // init at January 1, year 1, 00:00:00.000000000
+
 func SetUsersToNotify(uids map[uint64][]types.Notification) {
+	if time.Now().Sub(lastNotificationUpdate) < time.Minute*2 {
+		return
+	}
+
 	usersToNotifyMux.Lock()
 	defer usersToNotifyMux.Unlock()
 	for uid, n := range uids {
 		if _, exists := usersToNotify[uid]; !exists {
-			usersToNotify[uid] = n
-			continue
-		}
-
-		if len(usersToNotify[uid]) != 0 {
-			continue
+			if len(usersToNotify[uid]) != 0 { // to avoid dismissing notification without user seeing it
+				continue
+			}
 		}
 
 		usersToNotify[uid] = n
 	}
+	lastNotificationUpdate = time.Now()
 }
 
 func DismissClientNotification(uid uint64) bool {
