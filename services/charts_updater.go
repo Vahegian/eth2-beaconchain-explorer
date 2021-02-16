@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/prysmaticlabs/prysm/shared/mathutil"
-	"strings"
+	// "strings"
 )
 
 type chartHandler struct {
@@ -1441,69 +1441,15 @@ func depositsChartData() (*types.GenericChartData, error) {
 func depositsDistributionChartData() (*types.GenericChartData, error) {
 	var err error
 
-	rows := []struct {
-		Address []byte
-		Count   uint64
-	}{}
-
-	err = db.DB.Select(&rows, `
-		select from_address as address, count(*) as count
-		from (
-			select publickey, from_address
-			from eth1_deposits
-			where valid_signature = true
-			group by publickey, from_address
-			having sum(amount) >= 32e9
-		) a
-		group by from_address
-		order by count desc`)
-	if err != nil {
-		return nil, fmt.Errorf("error getting eth1-deposits-distribution: %w", err)
-	}
-
-	type pools struct {
-		Address string
-		Name    string
-	}
-
-	var stakePools []pools
-	err = db.DB.Select(&stakePools, "select address, name from stake_pools_stats;")
-	if err != nil {
-		return nil, fmt.Errorf("error retrieving stake pools stats: %v", err)
-	}
-
 	type seriesDataItem struct {
-		Name string `json:"name"`
-		Y    uint64 `json:"y"`
+		Name string `db:"name" json:"name"`
+		Y    uint64 `db:"deposit" json:"y"`
 	}
 	seriesData := []seriesDataItem{}
-	othersItem := seriesDataItem{
-		Name: "others",
-		Y:    0,
-	}
-	for i := range rows {
-		if i > 20 {
-			othersItem.Y += rows[i].Count
-			continue
-		}
 
-		var poolName string
-		for _, pool := range stakePools{
-			if strings.ToLower(string(utils.FormatEth1AddressString(rows[i].Address)))==strings.ToLower("0x"+pool.Address){
-				poolName=pool.Name
-				break
-			}
-		}
-		if poolName=="" {
-			continue
-		}
-		seriesData = append(seriesData, seriesDataItem{
-			Name: poolName,
-			Y:    rows[i].Count,
-		})
-	}
-	if othersItem.Y > 0 {
-		seriesData = append(seriesData, othersItem)
+	err = db.DB.Select(&seriesData, "select name, deposit from stake_pools_stats;")
+	if err != nil {
+		return nil, fmt.Errorf("error retrieving stake pools stats: %v", err)
 	}
 
 	chartData := &types.GenericChartData{
@@ -1511,15 +1457,15 @@ func depositsDistributionChartData() (*types.GenericChartData, error) {
 		Type:             "pie",
 		Title:            "Eth1 Deposit Addresses",
 		Subtitle:         "Validator distribution by Eth1 deposit address.",
-		TooltipFormatter: `function(){ return '<b>'+this.point.name+'</b><br\>Percentage: '+this.point.percentage.toFixed(2)+'%<br\>Validators: '+this.point.y }`,
+		TooltipFormatter: `function(){ return '<b>'+this.point.name+'</b><br\>Percentage: '+this.point.percentage.toFixed(2)+'%<br\>ETH: '+this.point.y }`,
 		PlotOptionsPie: `{
 			borderWidth: 1,
 			borderColor: null, 
 			dataLabels: { 
 				enabled:true, 
 				formatter: function() { 
-					var name = this.point.name.length > 8 ? this.point.name.substring(0,8) : this.point.name;
-					return '<span style="stroke:none; fill: var(--font-color)"><b style="stroke:none; fill: var(--font-color)">'+name+'…</b><span style="stroke:none; fill: var(--font-color)">: '+this.point.y+' ('+this.point.percentage.toFixed(2)+'%)</span></span>' 
+					var name = this.point.name.length > 20 ? this.point.name.substring(0,20)+'...' : this.point.name;
+					return '<span style="stroke:none; fill: var(--font-color)"><b style="stroke:none; fill: var(--font-color)">'+name+'</b></span>' 
 				} 
 			} 
 		}`,
