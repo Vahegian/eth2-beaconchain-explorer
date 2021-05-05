@@ -1,15 +1,15 @@
 .twitter-typeahead{
-    width: 100%;
+  width: 100%;
 }
 
 .tt-open{
-    background-color: var(--bg-color-secondary);
-    scrollbar-color: var(--primary) rgba(0,0,0,0.2);
-    scrollbar-width: thin;
+  background-color: var(--bg-color-secondary);
+  scrollbar-color: var(--primary) rgba(0,0,0,0.2);
+  scrollbar-width: thin;
 }
 
 .tt-open::-webkit-scrollbar{
-    width: 5px;
+  width: 5px;
 }
 
 .tt-suggestion.tt-cursor,
@@ -17,3 +17,75 @@
   color: #fff;
   background-color: #007bff;
 }
+
+.rewards-card {
+  max-width: 550px;
+  min-height: 500px;
+  margin: 3rem auto 0;
+  padding: 1rem .5rem 2rem;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 8%), 0px 0px 2px rgb(0 0 0 / 8%);
+  border-radius: 3px !important;
+ }
+
+.breadcrumb {
+	background: none;
+	display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.breadcrumb li, a {
+	font-size: 14px;
+	font-weight: 400;
+	padding-bottom: 1px;
+}
+
+.breadcrumb a { color: var(--genesis) }
+
+.breadcrumb a:hover {
+	background-size: 0 !important;
+	border-bottom: .1px solid currentColor;
+	padding-bottom: 0;
+}
+
+.breadcrumb>li+li:before { content: "\002F\00a0" }
+
+.rewards-card-title {
+  margin: 1rem 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  letter-spacing: 1px;
+}
+
+.rewards-card-body { padding: 1.5rem 3rem }
+
+.rewards-card-form {
+  width: 100%;
+  padding: .5rem;
+}
+
+.rewards-card-form-label {
+  margin-bottom: -2px;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--genesis) !important;
+}
+
+textarea { height: 5rem !important }
+
+input, 
+select { 
+  height: 3rem !important; 
+  padding: .5rem 1rem !important;
+}
+
+textarea::placeholder,
+input::placeholder,
+.rewards-card-form-select {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--genesis) !important;
+}
+
+.rewards-card-button { width: 100% }

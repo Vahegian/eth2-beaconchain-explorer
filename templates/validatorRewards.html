@@ -1,11 +1,12 @@
-{{ define "js"}}
+{{ define "js" }}
+
 <script type="text/javascript" src="/bundle/js/datatables.min.js"></script>
 <script type="text/javascript" src="/bundle/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="/bundle/js/jszip.min.js"></script>
 <script type="text/javascript" src="/bundle/js/pdfmake.min.js"></script>
 <script type="text/javascript" src="/bundle/js/vfs_fonts.min.js"></script>
 <script type="text/javascript" src="/bundle/js/buttons.html5.min.js"></script>
-<script src="bundle/js/validatorRewards.js"></script>
+<script src="/bundle/js/validatorRewards.js"></script>
 <script>
     updateCurrencies({{.Currencies}}, "#currency")
 </script>
@@ -20,19 +21,19 @@
     {{end}}
 </script>
 
-{{ define "css"}}
+{{ define "css" }}
+
 <link rel="stylesheet" type="text/css" href="/bundle/css/datatables.min.css"/>
 <link rel="stylesheet" type="text/css" href="/bundle/css/buttons.dataTables.min.css"/>
-<link rel="stylesheet" href="/bundle/css/validatorRewards.css"/>
+<link rel="stylesheet" href="/css/validatorRewards.css"/>
 
 {{end}}
 
-{{ define "content"}}
-<div class="container mt-2">
+{{ define "content" }}
+<!-- <div class="container mt-5" style="background-color: red;">
     <div class="my-3">
         <div class="d-md-flex py-2 justify-content-md-between">
             <h1 class="h4 mb-1 mb-md-0"><i class="far fa-money-bill-alt"></i> Validator Reward Calculator</h1>
-            
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb font-size-1 mb-0" style="padding:0; background-color:transparent;">
                     <li class="breadcrumb-item"><a href="/" title="Home">Home</a></li>
@@ -40,9 +41,18 @@
                 </ol>
             </nav>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-body p-0">
+    </div> -->
+    <div class="card rewards-card">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/" title="Home">Home</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Reward Calculator</li>
+			</ol>
+		</nav>
+        <div class="rewards-card-title">
+            <h1 class="h3">Validator Reward Calculator</h1>
+        </div>
+        <div class="card-body rewards-card-body">
             <div id="table-div" class="d-none">
                 <div class="d-flex justify-content-end align-items-center p-2" style="width: 100%;">
                     <a href="/rewards"><i class="fas fa-times text-danger"></i></a>
@@ -62,32 +72,38 @@
                     </table>
                 </div>
             </div>
-            <div id="form-div" class="p-3">
+            <div id="form-div" class="rewards-card-form">
                 <form>
-                    <div class="form-group">
-                        <label for="validators">Validators</label>
-                        <textarea id="validator-index-view" name="validators" class="form-control" style="width: 100%; background-color: rgba(0, 0, 0, 0);" placeholder="type validator indices manually. eg. 1234,5678,9012, ..." required></textarea>
-                        or
-                        <input class="form-control typeahead-validators" type="text"
-                                placeholder="Add a Validator via Validator index, Graffiti or Eth1 Address" aria-label="Search"/>
+                    <div class="form-group mb-4">
+                        <label for="validators" class="rewards-card-form-label">Validators</label>
+                        <textarea 
+                            id="validator-index-view" 
+                            name="validators" 
+                            class="form-control mb-4" 
+                            placeholder="Type validator indices manually. eg. 1234, 5678, 9012 ..." 
+                            required
+                        ></textarea>
+                        <div class="rewards-card-form-label">or</div>
+                        <input 
+                            class="form-control typeahead-validators" 
+                            type="text"
+                            placeholder="Add a Validator via Validator index, Graffiti or Eth1 Address" 
+                            aria-label="Search"
+                        />
                     </div>
-
                     <!-- <div class="form-group">
                     <label for="exampleInputPassword1">Timezone</label>
                     <select class="form-control" required>
                         <option>Europe</option>
                     </select>
                     </div> -->
-                    
-                    <div class="form-group">
-                        <label for="currency">Currency</label>
-                        <select id="currency" name="currency" class="form-control" required>
-                        </select>
+                    <div class="form-group mb-4">
+                        <label for="currency" class="rewards-card-form-label">Currency</label>
+                        <select id="currency" name="currency" class="form-control rewards-card-form-select" required></select>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="days">Data Range</label>
-                        <select id="days" name="days" class="form-control" required>
+                    <div class="form-group mb-4">
+                        <label for="days" class="rewards-card-form-label">Data Range</label>
+                        <select id="days" name="days" class="form-control rewards-card-form-select" required>
                             <option value="30">a month</option>
                             <option value="90">3 months</option>
                             <option value="180">6 months</option>
@@ -95,24 +111,22 @@
                             <option value="365">a year</option>
                         </select>
                     </div>
-                    
-                    
-                    <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="checkbox" name="checkbox" {{if not .User.Authenticated}}disabled{{end}}>
-                    <label class="form-check-label" for="checkbox">Subscribe to receive monthly reports {{if not .User.Authenticated}}(<a style="color: red;" href="/login">Please sign in to use this feature</a>){{end}}</label>
+                    <div class="form-check mt-4 mb-4">
+                        <input type="checkbox" class="form-check-input" id="checkbox" name="checkbox" {{if not .User.Authenticated}}disabled{{end}}>
+                        <label class="form-check-label" for="checkbox">
+                            Subscribe to receive monthly reports {{if not .User.Authenticated}}(<a style="color: red;" href="/login">Please sign in to use this feature</a>){{end}}
+                        </label>
                     </div>
-        
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary rewards-card-button">Submit</button>
                 </form>
             </div>
         </div>
     </div>
-
     <div id="loading-div" style="position: absolute; width: 8%; height: 8%; z-index: 100; top: 46%; right: 46%;" class="card p-1 d-flex justify-content-center align-items-center">
         <div class="spinner-border text-primary spinner-border-lg" role="status">
             <span class="sr-only">Loading...</span>
           </div>
     </div>
-</div>
+<!-- </div> -->
 
 {{end}}
