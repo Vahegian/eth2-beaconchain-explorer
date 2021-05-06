@@ -330,6 +330,8 @@ func main() {
 			authRouter.HandleFunc("/generateKey", handlers.GenerateAPIKey).Methods("POST")
 			authRouter.HandleFunc("/ethClients", handlers.EthClientsServices).Methods("GET")
 			authRouter.HandleFunc("/rewards", handlers.ValidatorRewards).Methods("GET")
+			authRouter.HandleFunc("/rewards/subscribe", handlers.RewardNotificationSubscribe).Methods("POST")
+			authRouter.HandleFunc("/rewards/unsubscribe", handlers.RewardNotificationUnsubscribe).Methods("POST")
 
 			err = initStripe(authRouter)
 			if err != nil {

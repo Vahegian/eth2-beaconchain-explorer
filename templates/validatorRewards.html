@@ -6,16 +6,20 @@
 <script type="text/javascript" src="/bundle/js/pdfmake.min.js"></script>
 <script type="text/javascript" src="/bundle/js/vfs_fonts.min.js"></script>
 <script type="text/javascript" src="/bundle/js/buttons.html5.min.js"></script>
+
+{{ .CsrfField }}
+
 <script src="/bundle/js/validatorRewards.js"></script>
 <script>
-    updateCurrencies({{.Currencies}}, "#currency")
+    updateCurrencies({{.Currencies}}, "currency")
+    updateSubscriptionTable({{.Subscriptions}}, "subscriptions-table")
 </script>
 
 {{end}}
 
 <script>
     {{if not .User.Authenticated}}
-        if (window.location.pathname!="/user/rewards"){
+        if (window.location.pathname!=="/user/rewards"){
             window.location.replace("/user/rewards");
         }
     {{end}}
@@ -25,11 +29,12 @@
 
 <link rel="stylesheet" type="text/css" href="/bundle/css/datatables.min.css"/>
 <link rel="stylesheet" type="text/css" href="/bundle/css/buttons.dataTables.min.css"/>
-<link rel="stylesheet" href="/css/validatorRewards.css"/>
+<link rel="stylesheet" href="/bundle/css/validatorRewards.css"/>
 
 {{end}}
 
 {{ define "content" }}
+
 <!-- <div class="container mt-5" style="background-color: red;">
     <div class="my-3">
         <div class="d-md-flex py-2 justify-content-md-between">
@@ -55,6 +60,11 @@
         <div class="card-body rewards-card-body">
             <div id="table-div" class="d-none">
                 <div class="d-flex justify-content-end align-items-center p-2" style="width: 100%;">
+                    <div class="d-flex justify-content-center align-items-center" style="width: 100%;"
+                    data-toggle="tooltip" data-original-title="Total Income">
+                        <span id="total-income-eth-span" class="mr-3"></span>
+                        <span id="total-income-currency-span"></span>
+                    </div>
                     <a href="/rewards"><i class="fas fa-times text-danger"></i></a>
                 </div>
                 <div class="table-responsive py-2">
