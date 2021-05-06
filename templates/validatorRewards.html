@@ -79,13 +79,13 @@
                         <textarea 
                             id="validator-index-view" 
                             name="validators" 
-                            class="form-control mb-4" 
+                            class="form-control mb-4 rewards-card-form-textarea" 
                             placeholder="Type validator indices manually. eg. 1234, 5678, 9012 ..." 
                             required
                         ></textarea>
                         <div class="rewards-card-form-label">or</div>
                         <input 
-                            class="form-control typeahead-validators" 
+                            class="form-control typeahead-validators rewards-card-form-input" 
                             type="text"
                             placeholder="Add a Validator via Validator index, Graffiti or Eth1 Address" 
                             aria-label="Search"
@@ -98,11 +98,18 @@
                     </select>
                     </div> -->
                     <div class="form-group mb-4">
-                        <label for="currency" class="rewards-card-form-label">Currency</label>
-                        <select id="currency" name="currency" class="form-control rewards-card-form-select" required></select>
+                        <label for="currency" class="rewards-card-form-label">
+                            Currency
+                            <i class="fas fa-caret-down rewards-card-select-arrow-down"></i>
+                        </label>
+                        <select id="currency" name="currency" class="form-control rewards-card-form-select" required>
+                        </select>
                     </div>
                     <div class="form-group mb-4">
-                        <label for="days" class="rewards-card-form-label">Data Range</label>
+                        <label for="days" class="rewards-card-form-label">
+                            Data Range
+                            <i class="fas fa-caret-down rewards-card-select-arrow-down"></i>
+                        </label>
                         <select id="days" name="days" class="form-control rewards-card-form-select" required>
                             <option value="30">a month</option>
                             <option value="90">3 months</option>
@@ -113,8 +120,8 @@
                     </div>
                     <div class="form-check mt-4 mb-4">
                         <input type="checkbox" class="form-check-input" id="checkbox" name="checkbox" {{if not .User.Authenticated}}disabled{{end}}>
-                        <label class="form-check-label" for="checkbox">
-                            Subscribe to receive monthly reports {{if not .User.Authenticated}}(<a style="color: red;" href="/login">Please sign in to use this feature</a>){{end}}
+                        <label class="form-check-label rewards-card-checkbox" for="checkbox">
+                            Subscribe to receive monthly reports. {{if not .User.Authenticated}}<a href="/login">Sign in to use this feature</a>{{end}}
                         </label>
                     </div>
                     <button type="submit" class="btn btn-primary rewards-card-button">Submit</button>

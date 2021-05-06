@@ -19,13 +19,26 @@
 }
 
 .rewards-card {
-  max-width: 550px;
-  min-height: 500px;
+  max-width: 950px;
+  min-height: 800px;
   margin: 3rem auto 0;
   padding: 1rem .5rem 2rem;
   box-shadow: 0px 2px 4px rgb(0 0 0 / 8%), 0px 0px 2px rgb(0 0 0 / 8%);
   border-radius: 3px !important;
  }
+
+.rewards-card .form-control::placeholder {
+  color: var(--genesis) !important;
+  opacity: 1; /* Firefox */
+}
+
+.rewards-card .form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: var(--genesis) !important;
+}
+
+.rewards-card .form-control::-ms-input-placeholder { /* Microsoft Edge */
+  color: var(--genesis) !important;
+}
 
 .breadcrumb {
 	background: none;
@@ -37,16 +50,9 @@
 .breadcrumb li, a {
 	font-size: 14px;
 	font-weight: 400;
-	padding-bottom: 1px;
 }
 
-.breadcrumb a { color: var(--genesis) }
-
-.breadcrumb a:hover {
-	background-size: 0 !important;
-	border-bottom: .1px solid currentColor;
-	padding-bottom: 0;
-}
+.breadcrumb a { color: var(--terracotta) }
 
 .breadcrumb>li+li:before { content: "\002F\00a0" }
 
@@ -60,32 +66,65 @@
 
 .rewards-card-body { padding: 1.5rem 3rem }
 
+@media (max-width: 600px) {
+  .rewards-card-body {
+    padding: .5rem 0;
+  }
+}
+
+
 .rewards-card-form {
   width: 100%;
-  padding: .5rem;
+  padding: .5rem 5rem;
+}
+
+@media (max-width: 800px) {
+  .rewards-card-form {
+    padding: .5rem 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .rewards-card-form {
+    padding: .5rem .1rem;
+  }
 }
 
 .rewards-card-form-label {
+  width: 100%;
   margin-bottom: -2px;
   font-size: 16px;
   font-weight: 300;
   color: var(--genesis) !important;
+  position: relative;
 }
 
-textarea { height: 5rem !important }
+.rewards-card-select-arrow-down {
+  position: absolute;
+  top: 2.5rem;
+  right: 1rem;
+}
 
-input, 
-select { 
+.rewards-card-form-textarea,
+.rewards-card-form-input, 
+.rewards-card-form-select { 
+  font-size: 14px !important;
+  font-weight: 400 !important;
   height: 3rem !important; 
   padding: .5rem 1rem !important;
-}
-
-textarea::placeholder,
-input::placeholder,
-.rewards-card-form-select {
-  font-size: 14px;
-  font-weight: 300;
   color: var(--genesis) !important;
 }
+
+.rewards-card-form-textarea { height: 5.5rem !important }
+
+.rewards-card-form-select { appearance: none }
+
+.rewards-card-checkbox,
+.rewards-card-checkbox a {
+  font-size: 14px;
+	font-weight: 400;
+}
+
+.rewards-card-checkbox a { color: var(--terracotta) }
 
 .rewards-card-button { width: 100% }
